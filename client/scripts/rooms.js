@@ -1,3 +1,4 @@
+/* eslint-disable */
 var Rooms = {
 
 
@@ -38,5 +39,5 @@ var Rooms = {
       callback(Rooms.items());
     }
   }
-  
+
 };

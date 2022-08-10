@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 var models = require('../models');
 
 module.exports = {

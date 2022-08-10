@@ -1,3 +1,4 @@
+/* eslint-disable */
 var mysql = require('mysql2');
 
 // Create a database connection and export it from this file.
@@ -9,4 +10,11 @@ var mysql = require('mysql2');
 // OR
 // user: 'root', password: 'some_password_you_created_at_install'
 
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'chat'
+});
 
+exports.connection = connection;

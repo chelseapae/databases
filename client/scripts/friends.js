@@ -1,3 +1,4 @@
+/* eslint-disable */
 var Friends = {
 
 
@@ -20,5 +21,5 @@ var Friends = {
       callback(true);
     }
   }
-  
+
 };
