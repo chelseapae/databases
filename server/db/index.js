@@ -1,4 +1,3 @@
-/* eslint-disable */
 var mysql = require('mysql2');
 
 // Create a database connection and export it from this file.
@@ -15,6 +14,12 @@ const connection = mysql.createConnection({
   user: 'root',
   password: '',
   database: 'chat'
+});
+
+connection.connect((err) => {
+  if (err) {
+    console.error('Failed to connect to database');
+  }
 });
 
 exports.connection = connection;
