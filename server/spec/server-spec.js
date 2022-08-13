@@ -8,10 +8,11 @@ const API_URL = 'http://127.0.0.1:3000/classes';
 
 describe('Persistent Node Chat Server', () => {
   const dbConnection = mysql.createConnection({
-    host: 'localhost',
+    host: '127.0.0.1',
     user: 'root',
     password: '',
-    database: 'chat'
+    database: 'chat',
+    port: '3306'
   });
 
   beforeAll((done) => {
@@ -51,8 +52,6 @@ describe('Persistent Node Chat Server', () => {
         const queryArgs = [1, 2 ];
 
         dbConnection.query(queryString, queryArgs, (err, results) => {
-          console.log('queryString', queryString)
-          console.log('RESULTS', results)
           if (err) {
             throw err;
           }
@@ -80,7 +79,6 @@ describe('Persistent Node Chat Server', () => {
     axios.post(`${API_URL}/users`, { username })
     .then(() => {
       // Post a message to the node chat server:
-      console.log('()()()MESSAGETWO', messageTwo)
         return axios.post(`${API_URL}/messages`, { username, message: messageTwo, roomname })
       })
       .then(() => {
@@ -92,8 +90,6 @@ describe('Persistent Node Chat Server', () => {
         const queryArgs = [];
 
         dbConnection.query(queryString, queryArgs, (err, results) => {
-
-          console.log('HEYRESULTS', results)
           if (err) {
             throw err;
           }
@@ -115,6 +111,10 @@ describe('Persistent Node Chat Server', () => {
     const queryString = 'SELECT text FROM messages;';
     // const queryString = 'INSERT INTO messages VALUES (1, "hello", 1, 1)';
     const queryArgs = [];
+
+    axios.post(`${API_URL}/messages`, { username, message, roomname });
+    axios.post(`${API_URL}/messages`, { username, messageTwo, roomname });
+
     /* TODO: The exact query string and query args to use here
      * depend on the schema you design, so I'll leave them up to you. */
     dbConnection.query(queryString, queryArgs, (err) => {
@@ -127,8 +127,6 @@ describe('Persistent Node Chat Server', () => {
         .then((response) => {
           const messageLog = response.data;
           console.log('MESSAGELOGGGGGGGG', messageLog)
-          console.log('MESSAGESSSSSS', messageLog[0].text, message)
-          console.log('ROOOOOOMS', messageLog[0].roomname)
           expect(messageLog[0].text).toEqual(message);
           expect(messageLog[0].roomname).toEqual(roomname);
           done();
