@@ -11,13 +11,12 @@ module.exports = {
           res.send(err)
         } else {
           res.statusCode = 200;
-          res.send(JSON.stringify(results))
+          res.send(results)
         }
       })
   },
   // a function which handles posting a message to the database
   post: function (req, res) {
-    console.log('HELLOHELLO')
     models.messages.create(req.body, (err, results) => {
       if (err) {
         console.log(err);

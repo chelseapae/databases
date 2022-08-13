@@ -1,4 +1,3 @@
-/* eslint-disable */
 var MessageView = {
 
   render: _.template(`

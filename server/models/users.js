@@ -18,7 +18,6 @@ module.exports = {
 
   // add a user to the db
   create: function (username, callback) {
-    console.log('&&&&&&USERNAME', username)
     db.connection.query(
       `INSERT INTO users (username) VALUES ('${username}')`,
       (err, results) => {

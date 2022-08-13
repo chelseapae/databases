@@ -9,7 +9,7 @@ module.exports = {
         res.send(err)
       } else {
         res.statusCode = 200;
-        res.send(JSON.stringify(results))
+        res.send(results)
       }
     })
   },

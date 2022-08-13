@@ -1,4 +1,3 @@
-/* eslint-disable */
 var MessagesView = {
 
   $chats: $('#chats'),
@@ -18,6 +17,7 @@ var MessagesView = {
   },
 
   renderMessage: function(message) {
+    console.log('******MESSAGE', message)
     var $message = MessageView.render(message);
     MessagesView.$chats.prepend($message);
   },

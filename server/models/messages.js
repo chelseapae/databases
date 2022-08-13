@@ -6,7 +6,8 @@ module.exports = {
   getAll: function (callback) {
 
     db.connection.query(
-      'SELECT * FROM messages',
+      // {username, text, roomname}
+      'SELECT m.text, m.roomname, u.username FROM messages m INNER JOIN users u ON m.user_id = u.id;',
       function(err, results) {
         if (err) {
           callback(err)
@@ -19,9 +20,9 @@ module.exports = {
 
   // a function which can be used to insert a message into the database
   create: function (messageBody, callback) {
-
+    console.log('****MESSAGEBODY', messageBody)
     db.connection.query(
-      'INSERT INTO messages (text, user_id, room_name) VALUES (?, (SELECT id FROM users WHERE (username = ?) limit 1), ?)', [messageBody.message, messageBody.username, messageBody.roomname],
+      'INSERT INTO messages (text, user_id, roomname) VALUES (?, (SELECT id FROM users WHERE (username = ?) limit 1), ?)', [messageBody.message, messageBody.username, messageBody.roomname],
       function(err, results) {
         if (err) {
           callback(err)
@@ -33,4 +34,4 @@ module.exports = {
   }
 };
 
-//      `INSERT INTO messages (text, user_id, room_name) VALUES ('${messageBody.message}', (SELECT id FROM users WHERE (username = '${messageBody.username}') limit 1), '${messageBody.roomname}')`,
+//      `INSERT INTO messages (text, user_id, roomname) VALUES ('${messageBody.message}', (SELECT id FROM users WHERE (username = '${messageBody.username}') limit 1), '${messageBody.roomname}')`,

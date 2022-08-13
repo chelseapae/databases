@@ -32,8 +32,10 @@ describe('Persistent Node Chat Server', () => {
 
   const username = 'Valjean';
   const message = 'In mercy\'s name, three days is all I need.';
+  const messageTwo = 'Chelsea and Cameron @ RPP2205';
   const roomname = 'Hello';
-  it('Should insert posted messages to the DB', (done) => {
+
+  it('Should insert a posted messages to the DB', (done) => {
     // Create a user on the chat server database.
     axios.post(`${API_URL}/users`, { username })
       .then(() => {
@@ -46,7 +48,7 @@ describe('Persistent Node Chat Server', () => {
         /* TODO: You might have to change this test to get all the data from
          * your message table, since this is schema-dependent. */
         const queryString = 'SELECT * FROM messages WHERE id = ?;';
-        const queryArgs = [1, 2, ];
+        const queryArgs = [1, 2 ];
 
         dbConnection.query(queryString, queryArgs, (err, results) => {
           console.log('queryString', queryString)
@@ -59,6 +61,47 @@ describe('Persistent Node Chat Server', () => {
 
           // TODO: If you don't have a column named text, change this test.
           expect(results[0].text).toEqual(message);
+          done();
+        })
+      })
+      .catch((err) => {
+        throw err;
+      });
+  });
+
+  it('Should insert additional posted messages to the DB', (done) => {
+    // axios.post(`${API_URL}/users`, { username })
+    // .then(() => {
+    //   // Post a message to the node chat server:
+    //   return axios.post(`${API_URL}/messages`, { username, message, roomname })
+    // })
+
+
+    // Create a user on the chat server database.
+    axios.post(`${API_URL}/users`, { username })
+      .then(() => {
+        // Post a message to the node chat server:
+        return axios.post(`${API_URL}/messages`, { username, messageTwo, roomname })
+      })
+      .then(() => {
+        // Now if we look in the database, we should find the posted message there.
+
+        /* TODO: You might have to change this test to get all the data from
+         * your message table, since this is schema-dependent. */
+        const queryString = 'SELECT * FROM messages;';
+        const queryArgs = [];
+
+        dbConnection.query(queryString, queryArgs, (err, results) => {
+
+          console.log('HEYRESULTS', results)
+          if (err) {
+            throw err;
+          }
+          // Should have one result:
+          expect(results.length).toEqual(2);
+
+          // TODO: If you don't have a column named text, change this test.
+          expect(results[1].text).toEqual(messageTwo);
           done();
         })
       })
@@ -83,10 +126,11 @@ describe('Persistent Node Chat Server', () => {
       axios.get(`${API_URL}/messages`)
         .then((response) => {
           const messageLog = response.data;
+          console.log('MESSAGELOGGGGGGGG', messageLog)
           console.log('MESSAGESSSSSS', messageLog[0].text, message)
-          console.log('ROOOOOOMS', messageLog[0].room_name)
+          console.log('ROOOOOOMS', messageLog[0].roomname)
           expect(messageLog[0].text).toEqual(message);
-          expect(messageLog[0].room_name).toEqual(roomname);
+          expect(messageLog[0].roomname).toEqual(roomname);
           done();
         })
         .catch((err) => {
@@ -94,4 +138,31 @@ describe('Persistent Node Chat Server', () => {
         })
     })
   })
+
+
+
+  ///USERS TESTS
+
+  it('Should output all users from the DB', (done) => {
+    // Let's insert a message into the db
+    const queryString = 'SELECT username FROM users;';
+    const queryArgs = [];
+    dbConnection.query(queryString, queryArgs, (err) => {
+      if (err) {
+        throw err;
+      }
+
+      // Now query the Node chat server and see if it returns the user previously added:
+      axios.get(`${API_URL}/users`)
+        .then((response) => {
+          const userLog = response.data;
+          expect(userLog[0].username).toEqual(username);
+          done();
+        })
+        .catch((err) => {
+          throw err;
+        })
+    })
+  })
+
 })

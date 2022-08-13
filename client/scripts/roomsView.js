@@ -1,4 +1,3 @@
-/* eslint-disable */
 var RoomsView = {
 
   $button: $('#rooms button'),

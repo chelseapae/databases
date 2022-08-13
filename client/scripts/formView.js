@@ -1,4 +1,3 @@
-/* eslint-disable */
 var FormView = {
 
   $form: $('form'),

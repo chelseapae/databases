@@ -12,7 +12,7 @@ CREATE TABLE messages (
   `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
   `text` TEXT,
   `user_id` INTEGER,
-  `room_name` TEXT,
+  `roomname` TEXT,
   FOREIGN KEY (user_id) REFERENCES users (id)
 );
 

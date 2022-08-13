@@ -1,4 +1,3 @@
-/* eslint-disable */
 var App = {
 
   $spinner: $('.spinner img'),
@@ -23,6 +22,7 @@ var App = {
 
   fetch: function(callback = ()=>{}) {
     Parse.readAll((data) => {
+      console.log('^^^^^^^DATA', data)
       // Don't bother to update if we have no messages
       if (data && data.length) {
         Rooms.update(data, RoomsView.render);
