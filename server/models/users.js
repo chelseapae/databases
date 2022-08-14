@@ -1,30 +1,32 @@
-var User = require('../ormDB.js').Users;
+var db = require('../db');
 
 module.exports = {
   // produce a list of all users
-  getAll: () => (
-    User.sync()
-    .then(() => {
-      return User.findAll({
-        attributes: {
-          exclude: ['createdAt', 'updatedAt']
+  getAll: function (callback) {
+    db.connection.query(
+      'SELECT * FROM users;',
+      function(err, results) {
+        if (err) {
+          callback(err)
+        } else {
+          console.log(results);
+          callback(null, results)
         }
-      });
-    })
-    .catch((err) => {
-      console.error(err);
-    })
-  ),
+      }
+    );
+  },
 
   // add a user to the db
-  create: (name) => (
-    User.sync()
-    .then(() => {
-      return User.create({username: name})
-    })
-    .catch((err) => {
-      console.error(err);
-    })
-  )
-
+  create: function (username, callback) {
+    db.connection.query(
+      `INSERT INTO users (username) VALUES ('${username}');`,
+      (err, results) => {
+        if (err) {
+          callback(err)
+        } else {
+          callback(null, results)
+        }
+      }
+    )
+  }
 };
